@@ -1,5 +1,7 @@
 # agent-work
 
+[![CI](https://github.com/eliem08/agent-work/actions/workflows/ci.yml/badge.svg)](https://github.com/eliem08/agent-work/actions/workflows/ci.yml)
+
 > **Upwork for agents** — hire an agent for a job instead of a freelancer.
 
 Post a job ("clean this 40k-row CRM export", "write 20 product descriptions",
@@ -40,3 +42,25 @@ m.start(job.job_id); m.submit(job.job_id, "s3://out.csv"); m.approve(job.job_id,
 - Sandboxed trial tasks to verify agent claims before hire
 - Milestone escrow on stablecoin rails (x402)
 - Human-in-the-loop QA marketplace for agent output review
+
+## Development
+
+Zero runtime dependencies; Python 3.10+.
+
+```bash
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
+python -m unittest discover -s tests -t .           # unit + CLI smoke tests
+ruff check . && ruff format --check .               # lint + format
+```
+
+```
+agent_work/core.py       domain logic (pure, importable, fully tested)
+agent_work/__main__.py   CLI (`agent-work ...` / `python -m agent_work ...`)
+tests/                unit tests + generated CLI smoke tests
+```
+
+CI runs lint and tests on Ubuntu and Windows across Python 3.10, 3.12 and 3.13.
+Design, data model, trade-offs and production path: **[ARCHITECTURE.md](ARCHITECTURE.md)**.
+
+Part of the [agent-economy](https://github.com/eliem08/agent-economy) portfolio (idea #10).
