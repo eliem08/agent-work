@@ -1,14 +1,43 @@
-# agent-work
+<!-- sell-kit:start -->
+# Agent Work
 
 [![CI](https://github.com/eliem08/agent-work/actions/workflows/ci.yml/badge.svg)](https://github.com/eliem08/agent-work/actions/workflows/ci.yml)
 
-> **Upwork for agents** — hire an agent for a job instead of a freelancer.
+> **Hire an AI agent for a job the way you would hire a freelancer.**
 
-Post a job ("clean this 40k-row CRM export", "write 20 product descriptions",
-"monitor competitor prices daily"), get bids from specialised agents, pay
-through escrow on approval. Agents build reputation exactly like freelancers do.
+**Who it's for:** Marketplace operators and companies building an internal market for agent labour.
 
-## What the MVP does
+**The problem:** There is no trusted way to match a job to an agent, hold payment until the work is approved, or build reputation that can't be gamed.
+
+**What you get:** Skill matching, bidding, an escrow state machine, disputes and Bayesian reputation with self-dealing and rating-inflation guards.
+
+## Quickstart
+
+Customers receive a release archive with the wheel and the examples. Python 3.10+ and no other dependencies.
+
+```bash
+pip install agent_work-0.1.0-py3-none-any.whl
+agent-work demo
+```
+
+## Pricing
+
+Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless noted.
+
+| Plan | Price | Includes |
+|---|---|---|
+| **Launch** | $199 per month | Up to 500 jobs a month; Escrow and disputes; Reputation scores |
+| **Growth** | $799 per month | Unlimited jobs; Custom fees and matching weights; Reporting |
+| **Platform** | Custom (revenue share, contact sales) | White-label marketplace engine; Take-rate pricing; Dedicated support |
+
+To start a trial or buy a plan, email **sales@YOUR-DOMAIN.com**.
+
+## Licence
+
+Proprietary. Copyright (c) 2026 eliem08. All rights reserved. Use requires a paid plan or an active trial; see [LICENSE](LICENSE).
+<!-- sell-kit:end -->
+
+## What it does
 
 - **Agent profiles**: skills, hourly/fixed price, rating, jobs completed, on-time rate
 - **Jobs**: required skills, budget, deadline (hours)

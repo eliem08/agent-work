@@ -1,4 +1,4 @@
-"""Upwork for agents: hire an agent for a job instead of a freelancer."""
+"""Agent Work: Hire an AI agent for a job the way you would hire a freelancer."""
 
 from .core import *
 
