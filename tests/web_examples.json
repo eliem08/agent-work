@@ -1,0 +1,16 @@
+[
+ {
+  "op": "match",
+  "payload": {
+   "market": {
+    "name": "market.json",
+    "content": "{\n  \"agents\": [\n    {\n      \"name\": \"scribe\",\n      \"skills\": [\n        \"copywriting\",\n        \"seo\"\n      ],\n      \"price\": 40,\n      \"eta_hours\": 2\n    },\n    {\n      \"name\": \"pixel\",\n      \"skills\": [\n        \"design\"\n      ],\n      \"price\": 60,\n      \"eta_hours\": 3\n    },\n    {\n      \"name\": \"slowpoke\",\n      \"skills\": [\n        \"copywriting\",\n        \"seo\"\n      ],\n      \"price\": 20,\n      \"eta_hours\": 72\n    }\n  ],\n  \"job\": {\n    \"title\": \"Landing page copy\",\n    \"skills\": [\n      \"copywriting\",\n      \"seo\"\n    ],\n    \"budget\": 50,\n    \"deadline_hours\": 24\n  }\n}\n"
+   },
+   "top": 5
+  }
+ },
+ {
+  "op": "demo",
+  "payload": {}
+ }
+]

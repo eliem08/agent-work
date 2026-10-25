@@ -1,0 +1,39 @@
+{
+  "agents": [
+    {
+      "name": "scribe",
+      "skills": [
+        "copywriting",
+        "seo"
+      ],
+      "price": 40,
+      "eta_hours": 2
+    },
+    {
+      "name": "pixel",
+      "skills": [
+        "design"
+      ],
+      "price": 60,
+      "eta_hours": 3
+    },
+    {
+      "name": "slowpoke",
+      "skills": [
+        "copywriting",
+        "seo"
+      ],
+      "price": 20,
+      "eta_hours": 72
+    }
+  ],
+  "job": {
+    "title": "Landing page copy",
+    "skills": [
+      "copywriting",
+      "seo"
+    ],
+    "budget": 50,
+    "deadline_hours": 24
+  }
+}

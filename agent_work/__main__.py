@@ -3,6 +3,7 @@ import csv
 import os
 import sys
 
+from .commands import add_commands, run
 from .core import Market
 
 
@@ -25,11 +26,19 @@ def demo():
     print(f"  released: agent earned ${a.earnings:.2f}, platform ${m.platform_revenue:.2f}, rating {a.rating:.2f}")
 
 
-def _run(argv=None):
+def build_parser():
     ap = argparse.ArgumentParser(prog="agent-work")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("demo")
-    ap.parse_args(argv)
+    add_commands(sub)
+    return ap
+
+
+def _run(argv=None):
+    ap = build_parser()
+    a = ap.parse_args(argv)
+    if a.cmd != "demo":
+        return run(a)
     demo()
     return 0
 
