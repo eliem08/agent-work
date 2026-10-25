@@ -48,6 +48,39 @@ class Tests(unittest.TestCase):
         with self.assertRaises(MarketError):
             self.m.award(b.bid_id)
 
+    def _deliver(self):
+        b = self.m.bid(self.job.job_id, "good", 80)
+        self.m.award(b.bid_id)
+        self.m.start(self.job.job_id)
+        self.m.submit(self.job.job_id, "done")
+
+    def test_ratings_must_be_1_to_5_stars(self):
+        self._deliver()
+        for rating in (1000, 0, -5, 4.5):
+            with self.subTest(rating=rating), self.assertRaises(MarketError):
+                self.m.approve(self.job.job_id, rating)
+        self.assertEqual(self.m.jobs[self.job.job_id].state, "submitted")
+        self.assertEqual(self.m.agents["good"].ratings, [])
+
+    def test_no_bidding_on_your_own_job_and_no_junk_bids(self):
+        self.m.register_agent("c", ["a", "b"], 10, 1)
+        with self.assertRaises(MarketError):
+            self.m.bid(self.job.job_id, "c", 50)
+        for amount in (float("nan"), -80, 0):
+            with self.subTest(amount=amount), self.assertRaises(MarketError):
+                self.m.bid(self.job.job_id, "good", amount)
+
+    def test_reregistering_cannot_reset_a_reputation(self):
+        self._deliver()
+        self.m.approve(self.job.job_id, 1)
+        with self.assertRaises(MarketError):
+            self.m.register_agent("good", ["a"], 50, 1)
+        self.assertEqual(self.m.agents["good"].ratings, [1])
+
+    def test_zero_budget_jobs_are_rejected(self):
+        with self.assertRaises(MarketError):
+            self.m.post_job("c", "t", ["a"], 0, 10)
+
 
 if __name__ == "__main__":
     unittest.main()

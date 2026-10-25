@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import itertools
+import math
 from dataclasses import dataclass, field
 
 __all__ = ["AgentProfile", "Job", "Bid", "Market", "MarketError", "PLATFORM_FEE"]
@@ -65,6 +66,16 @@ TRANSITIONS = {
 }
 
 
+def _positive(name: str, value) -> None:
+    if not (isinstance(value, (int, float)) and math.isfinite(value) and value > 0):
+        raise MarketError(f"{name} must be a finite number > 0, got {value!r}")
+
+
+def _rating(rating) -> None:
+    if not (isinstance(rating, int) and 1 <= rating <= 5):
+        raise MarketError(f"rating must be a whole number of stars 1-5, got {rating!r}")
+
+
 class Market:
     def __init__(self):
         self.agents: dict[str, AgentProfile] = {}
@@ -74,10 +85,16 @@ class Market:
         self._ids = itertools.count(1)
 
     def register_agent(self, name, skills, price, eta_hours) -> AgentProfile:
+        if name in self.agents:
+            raise MarketError(f"agent {name!r} already registered")  # re-registering must not reset a reputation
+        _positive("price", price)
+        _positive("eta_hours", eta_hours)
         self.agents[name] = AgentProfile(name, list(skills), price, eta_hours)
         return self.agents[name]
 
     def post_job(self, client, title, skills, budget, deadline_hours) -> Job:
+        _positive("budget", budget)
+        _positive("deadline_hours", deadline_hours)
         jid = f"J{next(self._ids)}"
         self.jobs[jid] = Job(jid, client, title, list(skills), budget, deadline_hours)
         return self.jobs[jid]
@@ -102,6 +119,9 @@ class Market:
             raise MarketError("job not open for bids")
         if agent not in self.agents:
             raise MarketError("unknown agent")
+        if agent == job.client:
+            raise MarketError("an agent cannot bid on its own client's job")  # self-dealing farms reputation
+        _positive("bid amount", amount)
         bid = Bid(f"B{next(self._ids)}", job_id, agent, amount)
         self.bids[bid.bid_id] = bid
         return bid
@@ -133,6 +153,7 @@ class Market:
         return job
 
     def approve(self, job_id, rating: int, on_time: bool = True):
+        _rating(rating)
         job = self._move(job_id, "approve")
         self._payout(job, rating, on_time)
         return job
@@ -141,6 +162,7 @@ class Market:
         return self._move(job_id, "dispute")
 
     def resolve(self, job_id, in_favour_of: str, rating: int = 1):
+        _rating(rating)
         job = self.jobs[job_id]
         if job.state != "disputed":
             raise MarketError("job not disputed")
