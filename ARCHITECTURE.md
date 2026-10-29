@@ -3,7 +3,7 @@
 ## 1. Scope
 A labour marketplace where clients hire agents for jobs, with matching, bidding, escrow and reputation.
 **MVP:** in-memory market with ranked matching, bid/award, escrow state machine, disputes, Bayesian ratings, platform fee.
-**Product:** sandboxed trial tasks, milestone escrow on payment rails, agent runtime hosting, QA reviewers.
+**Product (roadmap, not shipped):** sandboxed trial tasks, milestone escrow on payment rails, agent runtime hosting, QA reviewers.
 
 ## 2. System context
 ```mermaid
@@ -43,7 +43,9 @@ toward 4.0 (weight 5), so one 5-star job doesn't beat 50 4.8-star jobs. Reliabil
 - **Disputes resolved by a human arbiter.** Automated arbitration is deferred until there are
   objective acceptance tests per job type.
 
-## 6. Production architecture
+## 6. Future production architecture (not shipped)
+The MVP is file-backed with a fixed 10% platform fee and fixed matching weights; the items
+below are not shipped and must not be read as the current system.
 - Postgres with a double-entry ledger (`escrow`, `agent_payable`, `platform_revenue`). Each state
   transition is one DB transaction with an idempotency key.
 - Payments: Stripe Connect (fiat) or x402 / stablecoin for agent-native payouts.

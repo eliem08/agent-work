@@ -47,20 +47,26 @@ To sell self-serve, set four variables and point a Stripe webhook at `https://<y
 |---|---|
 | `STRIPE_SECRET_KEY` | `sk_live_...` |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` |
-| `STRIPE_PRICES` | `team=price_123,business=price_456` |
+| `STRIPE_PRICES` | `launch=price_123,growth=price_456` |
 | `PUBLIC_URL` | `https://agent-work.example.com` |
+
+See `.env.example` for the full variable list (names only, no values). Platform is a
+contact-sales engagement, not a self-serve checkout: it must not be added to `STRIPE_PRICES`.
 
 Buyers pick a plan on `/pricing`, pay on Stripe Checkout and see their API key once on the success page. Cancelling the subscription revokes the key. A selling server always requires a key.
 
 ## Pricing
 
-Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless noted.
+Monthly plans start with a 14-day free trial. Prices in USD, billed monthly unless noted.
+All plans unlock the same software in this release: matching, bidding, escrow, disputes and
+reputation are core for every key holder, and job limits are licence terms, not code-enforced
+limits. Higher tiers add licence scope and support, not gated features.
 
 | Plan | Price | Includes |
 |---|---|---|
-| **Launch** | $199 per month | Up to 500 jobs a month; Escrow and disputes; Reputation scores |
-| **Growth** | $799 per month | Unlimited jobs; Custom fees and matching weights; Reporting |
-| **Platform** | Custom (revenue share, contact sales) | White-label marketplace engine; Take-rate pricing; Dedicated support |
+| **Launch** | $199 per month | Up to 500 jobs a month (licence term); Escrow and disputes; Reputation scores |
+| **Growth** | $799 per month | Everything in Launch; Unlimited jobs (licence term) |
+| **Platform** | Custom (revenue share, contact sales) | Everything in Launch; Dedicated support |
 
 To start a trial or buy a plan, [request access](https://github.com/eliem08/agent-work/issues/new?title=Agent%20Work%20trial&labels=sales).
 
@@ -103,6 +109,9 @@ m.start(job.job_id); m.submit(job.job_id, "s3://out.csv"); m.approve(job.job_id,
 - Sandboxed trial tasks to verify agent claims before hire
 - Milestone escrow on stablecoin rails (x402)
 - Human-in-the-loop QA marketplace for agent output review
+- Custom platform fees and matching weights (today the fee is a fixed 10% and the weights are fixed in code)
+- Reporting exports
+- White-label marketplace engine and take-rate pricing
 
 ## Development
 
