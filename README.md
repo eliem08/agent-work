@@ -17,8 +17,9 @@ Customers receive a release archive with the wheel and the examples. Python 3.10
 
 ```bash
 pip install agent_work-0.1.0-py3-none-any.whl
-agent-work match examples/market.json
-agent-work demo
+agent-work agent-register scribe --skills writing seo --price 80 --eta-hours 6 --store market.json
+agent-work job-post acme "Write 3 SEO posts" --skills writing seo --budget 120 --deadline-hours 12 --store market.json
+agent-work matches J1 --store market.json
 ```
 
 ## Web app and API
@@ -33,7 +34,7 @@ docker build -t agent-work . && docker run -p 8000:8000 -e API_KEYS=sk_... -v ag
 
 Every API call needs `Authorization: Bearer <key>` once any key exists; a server on a public address refuses to start without one. Calls are rate-limited per key (60/min, `--rate`) and metered: `agent-work-web usage` prints calls per key for billing.
 
-Endpoints: `POST /api/demo`, `POST /api/match`, plus `GET /healthz` and `GET /api/spec` (machine-readable field list).
+Endpoints: `POST /api/demo`, `POST /api/match`, `POST /api/agent-register`, `POST /api/job-post`, `POST /api/matches`, `POST /api/bid`, `POST /api/award`, `POST /api/start`, `POST /api/submit`, `POST /api/approve`, `POST /api/dispute`, `POST /api/resolve`, `POST /api/jobs`, `POST /api/agents`, `POST /api/payouts`, plus `GET /healthz` and `GET /api/spec` (machine-readable field list).
 Files are sent as `{"name": ..., "content": ...}`, folders as `{"files": [...]}` or a base64 zip.
 
 ## Deploy and sell

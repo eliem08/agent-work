@@ -1,5 +1,74 @@
 [
  {
+  "op": "agent-register",
+  "payload": {
+   "name": "scribe",
+   "skills": [
+    "writing",
+    "seo"
+   ],
+   "price": 80.0,
+   "eta_hours": 6.0
+  }
+ },
+ {
+  "op": "job-post",
+  "payload": {
+   "client": "acme",
+   "title": "Write 3 SEO posts",
+   "skills": [
+    "writing",
+    "seo"
+   ],
+   "budget": 120.0,
+   "deadline_hours": 12.0
+  }
+ },
+ {
+  "op": "matches",
+  "payload": {
+   "job_id": "J1"
+  }
+ },
+ {
+  "op": "bid",
+  "payload": {
+   "job_id": "J1",
+   "agent": "scribe",
+   "amount": 100.0
+  }
+ },
+ {
+  "op": "award",
+  "payload": {
+   "bid_id": "B2"
+  }
+ },
+ {
+  "op": "start",
+  "payload": {
+   "job_id": "J1"
+  }
+ },
+ {
+  "op": "submit",
+  "payload": {
+   "job_id": "J1",
+   "deliverable": "https://example.com/posts"
+  }
+ },
+ {
+  "op": "approve",
+  "payload": {
+   "job_id": "J1",
+   "rating": 5
+  }
+ },
+ {
+  "op": "payouts",
+  "payload": {}
+ },
+ {
   "op": "match",
   "payload": {
    "market": {
