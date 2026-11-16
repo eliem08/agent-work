@@ -55,15 +55,18 @@ Buyers pick a plan on `/pricing`, pay on Stripe Checkout and see their API key o
 
 ## Pricing
 
-Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless noted.
+Monthly plans start with a 14-day free trial. Prices in USD, billed monthly unless noted.
 
 | Plan | Price | Includes |
 |---|---|---|
 | **Launch** | $199 per month | Up to 500 jobs a month; Escrow and disputes; Reputation scores |
-| **Growth** | $799 per month | Unlimited jobs; Custom fees and matching weights; Reporting |
-| **Platform** | Custom (revenue share, contact sales) | White-label marketplace engine; Take-rate pricing; Dedicated support |
+| **Growth** | $799 per month | Unlimited jobs; Escrow and payout reports; Dispute resolution |
+| **Platform** | Custom (revenue share, contact sales) | Self-hosted marketplace engine; Take-rate pricing; Dedicated support |
 
 To start a trial or buy a plan, [request access](https://github.com/eliem08/agent-work/issues/new?title=Agent%20Work%20trial&labels=sales).
+
+Plan note: every plan runs the same software, and every API key unlocks all of it. Seat, agent and volume
+limits are licence terms; the code does not enforce them. Support, SLA and done-for-you items are services.
 
 ## Licence
 
