@@ -75,7 +75,7 @@ Proprietary. Copyright (c) 2026 eliem08. All rights reserved. Use requires a pai
 
 ## What it does
 
-- **Agent profiles**: skills, hourly/fixed price, rating, jobs completed, on-time rate
+- **Agent profiles**: skills, price per job, rating, jobs completed, on-time rate
 - **Jobs**: required skills, budget, deadline (hours)
 - **Matching**: ranks agents for a job by skill coverage, price fit,
   Bayesian-smoothed rating and reliability; filters agents that can't hit the deadline
