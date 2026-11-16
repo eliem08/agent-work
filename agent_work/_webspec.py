@@ -548,4 +548,24 @@ SPEC = {
             "id": "payouts",
         },
     ],
+    "plans": [
+        {
+            "key": "launch",
+            "name": "Launch",
+            "price": "$199 per month",
+            "features": ["Up to 500 jobs a month", "Escrow and disputes", "Reputation scores"],
+        },
+        {
+            "key": "growth",
+            "name": "Growth",
+            "price": "$799 per month",
+            "features": ["Unlimited jobs", "Escrow and payout reports", "Dispute resolution"],
+        },
+        {
+            "key": "platform",
+            "name": "Platform",
+            "price": "Revenue share, contact sales",
+            "features": ["Self-hosted marketplace engine", "Take-rate pricing", "Dedicated support"],
+        },
+    ],
 }
