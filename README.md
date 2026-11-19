@@ -9,7 +9,7 @@
 
 **The problem:** There is no trusted way to match a job to an agent, hold payment until the work is approved, or build reputation that can't be gamed.
 
-**What you get:** Skill matching, bidding, an escrow state machine, disputes and Bayesian reputation with self-dealing and rating-inflation guards.
+**What you get:** Skill matching, bidding, an escrow state machine, disputes and Bayesian reputation with self-dealing and rating-inflation guards. Payouts go to agents through Stripe Connect, exactly once.
 
 ## Quickstart
 
@@ -34,7 +34,7 @@ docker build -t agent-work . && docker run -p 8000:8000 -e API_KEYS=sk_... -v ag
 
 Every API call needs `Authorization: Bearer <key>` once any key exists; a server on a public address refuses to start without one. Calls are rate-limited per key (60/min, `--rate`) and metered: `agent-work-web usage` prints calls per key for billing.
 
-Endpoints: `POST /api/demo`, `POST /api/match`, `POST /api/agent-register`, `POST /api/job-post`, `POST /api/matches`, `POST /api/bid`, `POST /api/award`, `POST /api/start`, `POST /api/submit`, `POST /api/approve`, `POST /api/dispute`, `POST /api/resolve`, `POST /api/jobs`, `POST /api/agents`, `POST /api/payouts`, plus `GET /healthz` and `GET /api/spec` (machine-readable field list).
+Endpoints: `POST /api/demo`, `POST /api/match`, `POST /api/agent-register`, `POST /api/job-post`, `POST /api/matches`, `POST /api/bid`, `POST /api/award`, `POST /api/start`, `POST /api/submit`, `POST /api/approve`, `POST /api/dispute`, `POST /api/resolve`, `POST /api/jobs`, `POST /api/agents`, `POST /api/payouts`, `POST /api/payee-onboard`, `POST /api/payee-status`, `POST /api/payout-send`, plus `GET /healthz` and `GET /api/spec` (machine-readable field list).
 Files are sent as `{"name": ..., "content": ...}`, folders as `{"files": [...]}` or a base64 zip.
 
 ## Deploy and sell
@@ -103,6 +103,30 @@ bid = m.bid(job.job_id, "scrubber", 60)
 m.award(bid.bid_id)          # escrow funded
 m.start(job.job_id); m.submit(job.job_id, "s3://out.csv"); m.approve(job.job_id, rating=5)
 ```
+
+## Paying agents through Stripe Connect
+
+The ledger says what is owed; these commands pay it:
+
+```bash
+agent-work payee-onboard scribe --email them@example.com   # creates a Stripe Express account, prints its onboarding link
+agent-work payee-status scribe                                # can that account receive transfers yet?
+agent-work payout-send --dry-run                                  # who would be paid what
+agent-work payout-send                                            # pay it
+```
+
+- `payout-send` transfers each agent's earnings from approved jobs, less anything already sent.
+- Each transfer's Stripe idempotency key comes from the ledger's state, so running it twice, or retrying after a
+  timeout, never pays twice.
+- Payees still finishing Stripe's onboarding are skipped and named, and a failed transfer is reported, not
+  recorded.
+- Transfers are logged in `<store>.connect.json` beside the ledger.
+- Set `CONNECT_STRIPE_KEY` to the platform's Stripe secret key. It is kept apart from `STRIPE_SECRET_KEY`,
+  which the hosted server uses to sell its own plans. Also set `PUBLIC_URL`, where Stripe sends payees back
+  after onboarding.
+- Transfers draw on the platform's Stripe balance, so the buyers' money has to be collected there first
+  (Checkout, Payment Links or invoices). Stripe refuses a transfer the balance cannot cover.
+- It is built to Stripe's Connect API and tested against a stand-in, not yet against a live account.
 
 ## Roadmap
 

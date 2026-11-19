@@ -9,6 +9,7 @@ import json
 import os
 from dataclasses import asdict
 
+from . import connect
 from .core import PLATFORM_FEE, AgentProfile, Bid, Job, Market, MarketError
 
 OPS = (
@@ -25,6 +26,7 @@ OPS = (
     "jobs",
     "agents",
     "payouts",
+    *connect.COMMANDS,
 )
 
 
@@ -96,6 +98,7 @@ def add_ops(sub):
     sub.add_parser("jobs", help="every job and its state")
     sub.add_parser("agents", help="agents by rating and reliability")
     sub.add_parser("payouts", help="what to settle: agent earnings, escrow held, platform revenue")
+    connect.add_commands(sub)
     for name in OPS:
         sub.choices[name].add_argument("--store", default=store)
 
@@ -107,6 +110,8 @@ def _job(m: Market, job_id: str) -> Job:
 
 
 def run_ops(a) -> int:
+    if a.cmd in connect.COMMANDS:
+        return connect.run_command(a, _earned, "agent-work")
     try:
         m = load(a.store)
         _run(m, a)
@@ -176,3 +181,8 @@ def _run(m: Market, a):
                 print(f"pay {p.name:<20} ${p.earnings:,.2f}")
         print(f"escrow held      ${sum(j.escrow for j in m.jobs.values()):,.2f}")
         print(f"platform revenue ${m.platform_revenue:,.2f}")
+
+
+def _earned(store: str) -> dict:
+    """Cumulative earnings per agent (the ledger only ever adds to them)."""
+    return {p.name: p.earnings for p in load(store).agents.values() if p.earnings > 0}
